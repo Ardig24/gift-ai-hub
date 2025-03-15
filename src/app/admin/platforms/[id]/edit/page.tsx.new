@@ -1,0 +1,13 @@
+import { Suspense } from "react"
+import PlatformEdit from "./platform-edit"
+
+// Server component that passes the ID to the client component
+export default function EditPlatformPage({ params }: { params: { id: string } }) {
+  return (
+    <Suspense fallback={<div className="flex h-40 items-center justify-center">
+      <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
+    </div>}>
+      <PlatformEdit id={params.id} />
+    </Suspense>
+  )
+}
