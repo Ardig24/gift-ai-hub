@@ -1,10 +1,11 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, use } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { platformsTable, subscriptionsTable } from "@/lib/supabase/client"
 import { Platform, Subscription } from "@/lib/supabase/types"
+import { deletePlatform, getPlatformById } from "../actions"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -27,17 +28,18 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 
-// Using a type assertion to handle the params warning
+// Using React.use to handle the params Promise
 type PageProps = {
-  params: {
+  params: Promise<{
     id: string
-  }
+  }>
 }
 
 export default function PlatformDetailPage(props: PageProps) {
   const router = useRouter()
-  // Access params safely with type assertion
-  const id = String(props.params.id)
+  // Unwrap params using React.use
+  const params = use(props.params)
+  const id = params.id
   
   const [platform, setPlatform] = useState<Platform | null>(null)
   const [isLoading, setIsLoading] = useState(true)
@@ -50,15 +52,17 @@ export default function PlatformDetailPage(props: PageProps) {
 
   const fetchPlatform = async () => {
     try {
-      const data = await platformsTable.getById(id)
-      if (data) {
-        setPlatform(data)
+      // Use server action to get platform by ID
+      const response = await getPlatformById(id)
+      
+      if (response.success && response.data) {
+        setPlatform(response.data)
       } else {
-        setError("Platform not found")
+        setError(response.error || "Platform not found")
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error fetching platform:", error)
-      setError("Failed to load platform")
+      setError(error.message || "Failed to load platform")
     } finally {
       setIsLoading(false)
     }
@@ -66,11 +70,17 @@ export default function PlatformDetailPage(props: PageProps) {
 
   const handleDelete = async () => {
     try {
-      await platformsTable.delete(id)
-      router.push("/admin/platforms")
-    } catch (error) {
+      // Use server action to delete platform
+      const response = await deletePlatform(id)
+      
+      if (response.success) {
+        router.push("/admin/platforms")
+      } else {
+        setError(response.error || "Failed to delete platform")
+      }
+    } catch (error: any) {
       console.error("Error deleting platform:", error)
-      setError("Failed to delete platform")
+      setError(`Failed to delete platform: ${error.message || JSON.stringify(error)}`)
     } finally {
       setDeleteDialogOpen(false)
     }

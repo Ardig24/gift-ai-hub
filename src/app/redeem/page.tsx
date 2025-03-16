@@ -28,48 +28,98 @@ export default function RedeemPage() {
   const onSubmit = async (data: RedeemFormData) => {
     setIsSubmitting(true)
     
-    // In a real application, this would verify the gift code with your backend
-    console.log("Redeem form data:", data)
-    
-    // Simulate API call and successful gift code verification
-    setTimeout(() => {
+    try {
+      // Verify the gift code with the backend
+      const response = await fetch('/api/gift/verify', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          code: data.giftCode,
+          email: data.email,
+        }),
+      })
+      
+      const result = await response.json()
+      
+      if (!response.ok) {
+        throw new Error(result.message || 'Failed to verify gift code')
+      }
+      
       setIsSubmitting(false)
       
-      // Mock gift details that would come from the backend
+      // Store the gift code and email for later use
+      localStorage.setItem('giftCode', data.giftCode)
+      localStorage.setItem('giftEmail', data.email)
+      
+      // Set gift details from the API response
       setGiftDetails({
         platform: {
-          id: "chatgpt",
-          name: "ChatGPT Plus",
-          description: "Access to GPT-4o, faster response times, and priority features",
-          basePrice: 20,
-          icon: "chat"
+          id: result.platformId,
+          name: result.platformName,
+          description: result.platformDescription || 'Access to premium AI features',
+          icon: result.platformId === 'chatgpt' ? 'chat' : 'default'
         },
         subscription: {
-          id: "3months",
-          name: "3 Months",
-          expiresAt: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toLocaleDateString()
+          id: result.subscriptionId,
+          name: result.subscriptionPeriod,
+          expiresAt: result.expiresAt ? new Date(result.expiresAt).toLocaleDateString() : 'N/A'
         },
         sender: {
-          name: "Alex Johnson"
+          name: result.senderName
         },
-        message: "Happy birthday! I thought you'd enjoy exploring AI with this subscription. Enjoy!"
+        message: result.message || ''
       })
       
       setStep(2)
-    }, 1500)
+    } catch (error) {
+      console.error('Error verifying gift code:', error)
+      setIsSubmitting(false)
+      // Show error message to user
+      alert(error instanceof Error ? error.message : 'Failed to verify gift code. Please check your code and try again.')
+    }
   }
   
   // Handle redemption confirmation
-  const handleConfirmRedemption = () => {
+  const handleConfirmRedemption = async () => {
     setIsSubmitting(true)
     
-    // In a real application, this would complete the redemption process with your backend
-    
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      // Get the stored gift code and email
+      const giftCode = localStorage.getItem('giftCode')
+      const email = localStorage.getItem('giftEmail')
+      
+      if (!giftCode) {
+        throw new Error('Gift code not found. Please try again.')
+      }
+      
+      // Complete the redemption process with the backend
+      const response = await fetch('/api/gift/redeem', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          code: giftCode,
+          email: email,
+        }),
+      })
+      
+      const result = await response.json()
+      
+      if (!response.ok) {
+        throw new Error(result.message || 'Failed to redeem gift code')
+      }
+      
       setIsSubmitting(false)
       setIsSuccess(true)
-    }, 1500)
+    } catch (error) {
+      console.error('Error redeeming gift code:', error)
+      setIsSubmitting(false)
+      // Show error message to user
+      alert(error instanceof Error ? error.message : 'Failed to redeem gift code. Please try again later.')
+    }
   }
   
   // Get icon component based on platform icon type

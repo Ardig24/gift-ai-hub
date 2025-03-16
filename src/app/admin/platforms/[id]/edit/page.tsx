@@ -1,9 +1,10 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, use } from "react"
 import { useRouter } from "next/navigation"
 import { platformsTable } from "@/lib/supabase/client"
 import { Platform } from "@/lib/supabase/types"
+import { createPlatform, updatePlatform, getPlatformById } from "../../actions"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -11,17 +12,18 @@ import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 
-// Using a type assertion to handle the params warning
+// Using React.use to handle the params Promise
 type PageProps = {
-  params: {
+  params: Promise<{
     id: string
-  }
+  }>
 }
 
 export default function EditPlatformPage(props: PageProps) {
   const router = useRouter()
-  // Access params safely with type assertion
-  const id = String(props.params.id)
+  // Unwrap params using React.use
+  const params = use(props.params)
+  const id = params.id
   const isNewPlatform = id === "new"
   
   const [platform, setPlatform] = useState<Partial<Platform>>({
@@ -46,16 +48,20 @@ export default function EditPlatformPage(props: PageProps) {
 
   const fetchPlatform = async () => {
     try {
-      const data = await platformsTable.getById(id)
-      if (data) {
-        setPlatform(data)
-        setFeaturesInput(data.features.join("\n"))
+      // Use server action to get platform by ID
+      const response = await getPlatformById(id)
+      
+      if (response.success && response.data) {
+        setPlatform(response.data)
+        if (response.data.features && Array.isArray(response.data.features)) {
+          setFeaturesInput(response.data.features.join("\n"))
+        }
       } else {
-        setError("Platform not found")
+        setError(response.error || "Platform not found")
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error fetching platform:", error)
-      setError("Failed to load platform")
+      setError(error.message || "Failed to load platform")
     } finally {
       setIsLoading(false)
     }
@@ -83,16 +89,25 @@ export default function EditPlatformPage(props: PageProps) {
     setError(null)
 
     try {
+      let response;
+      
       if (isNewPlatform) {
-        await platformsTable.create(platform)
+        // Use server action to create platform
+        response = await createPlatform(platform)
       } else {
-        await platformsTable.update(id, platform)
+        // Use server action to update platform
+        response = await updatePlatform(id, platform)
       }
       
-      router.push("/admin/platforms")
-    } catch (error) {
+      if (response.success) {
+        router.push("/admin/platforms")
+      } else {
+        setError(response.error || `Failed to ${isNewPlatform ? 'create' : 'update'} platform`)
+        setIsSaving(false)
+      }
+    } catch (error: any) {
       console.error("Error saving platform:", error)
-      setError("Failed to save platform")
+      setError(`Error ${isNewPlatform ? 'creating' : 'updating'} platform: ${error.message || JSON.stringify(error)}`)
       setIsSaving(false)
     }
   }

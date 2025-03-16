@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
-import { platformsTable, subscriptionsTable } from "@/lib/supabase/client"
+import { platformsTable } from "@/lib/supabase/client"
 import { Platform, Subscription } from "@/lib/supabase/types"
+import { createSubscription, updateSubscription, getSubscriptionById } from "../../actions"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -69,21 +70,17 @@ export default function EditSubscriptionPage(props: PageProps) {
 
   const fetchSubscription = async () => {
     try {
-      // Since we don't have a direct getById method for subscriptions,
-      // we'll use a workaround to get the subscription by ID
-      const data = await subscriptionsTable.getByPlatformId("*") // Get all subscriptions
+      // Use server action to get subscription by ID
+      const response = await getSubscriptionById(id)
       
-      // Find the subscription with the matching ID
-      const subscription = data.find((sub: any) => sub.id === id)
-      
-      if (subscription) {
-        setSubscription(subscription)
+      if (response.success && response.data) {
+        setSubscription(response.data)
       } else {
-        setError("Subscription not found")
+        setError(response.error || "Subscription not found")
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error fetching subscription:", error)
-      setError("Failed to load subscription")
+      setError(error.message || "Failed to load subscription")
     } finally {
       setIsLoading(false)
     }
@@ -119,13 +116,22 @@ export default function EditSubscriptionPage(props: PageProps) {
         throw new Error("Please select a platform")
       }
 
+      let response;
+      
       if (isNewSubscription) {
-        await subscriptionsTable.create(subscription)
+        // Use server action to create subscription
+        response = await createSubscription(subscription)
       } else {
-        await subscriptionsTable.update(id, subscription)
+        // Use server action to update subscription
+        response = await updateSubscription(id, subscription)
       }
       
-      router.push("/admin/subscriptions")
+      if (response.success) {
+        router.push(`/admin/platforms/${subscription.platform_id}`)
+      } else {
+        setError(response.error || `Failed to ${isNewSubscription ? 'create' : 'update'} subscription`)
+        setIsSaving(false)
+      }
     } catch (error: any) {
       console.error("Error saving subscription:", error)
       setError(error.message || "Failed to save subscription")

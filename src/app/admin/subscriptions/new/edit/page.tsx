@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
-import { platformsTable, subscriptionsTable } from "@/lib/supabase/client"
+import { platformsTable } from "@/lib/supabase/client"
 import { Platform, Subscription } from "@/lib/supabase/types"
+import { createSubscription } from "../../actions"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -81,8 +82,15 @@ export default function NewSubscriptionPage() {
         throw new Error("Please select a platform")
       }
 
-      await subscriptionsTable.create(subscription)
-      router.push("/admin/subscriptions")
+      // Use server action to create subscription
+      const response = await createSubscription(subscription)
+      
+      if (response.success) {
+        router.push(`/admin/platforms/${subscription.platform_id}`)
+      } else {
+        setError(response.error || "Failed to create subscription")
+        setIsSaving(false)
+      }
     } catch (error: any) {
       console.error("Error saving subscription:", error)
       setError(error.message || "Failed to save subscription")
