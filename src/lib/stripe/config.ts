@@ -1,11 +1,11 @@
 // Stripe configuration
 export const STRIPE_CONFIG = {
-  // Use Stripe test keys
-  publishableKey: process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || 'pk_test_51Qrh2VKkGJweJ0lkz8RXPRkDcIUigpCCHUU5i1nuMoHmRPhaxKgBC6m9M5CJdfHb4e0rw7rOTVRpG9cL1atokDMl00inwPTJVB',
-  secretKey: process.env.STRIPE_SECRET_KEY || 'sk_test_51Qrh2VKkGJweJ0lkSAFw8p1aCKd1ZE7dHsnDBm4MqjLS0U3nPjnuGsFdcCXPv2K0xfPO1K71NjKjjFeUIa6O4ePv00L0bBVE2O',
+  // Use Stripe keys from environment variables
+  publishableKey: process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || '',
+  secretKey: process.env.STRIPE_SECRET_KEY || '',
   
-  // Replace with your actual webhook secret for production
-  webhookSecret: process.env.STRIPE_WEBHOOK_SECRET || 'whsec_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+  // Webhook secret from environment variable
+  webhookSecret: process.env.STRIPE_WEBHOOK_SECRET || '',
   
   // Test mode flag
   testMode: true,
@@ -13,8 +13,8 @@ export const STRIPE_CONFIG = {
   // Currency
   currency: 'usd',
   
-  // Success and cancel URLs - hardcoded for local development
+  // Success and cancel URLs
   // These must be absolute URLs for Stripe to redirect properly
-  successUrl: 'http://localhost:3000/checkout/success',
-  cancelUrl: 'http://localhost:3000/checkout/cancel',
+  successUrl: process.env.NEXT_PUBLIC_BASE_URL ? `${process.env.NEXT_PUBLIC_BASE_URL}/checkout/success` : 'https://intelligift.ai/checkout/success',
+  cancelUrl: process.env.NEXT_PUBLIC_BASE_URL ? `${process.env.NEXT_PUBLIC_BASE_URL}/checkout/cancel` : 'https://intelligift.ai/checkout/cancel',
 };

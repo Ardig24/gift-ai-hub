@@ -1,6 +1,6 @@
-# GiftAI Hub
+# IntelliGift
 
-GiftAI Hub is a platform that allows users to gift AI platform subscriptions to friends, family, or colleagues. The platform supports multiple AI services including ChatGPT, Claude, Midjourney, and more.
+IntelliGift is a platform that allows users to gift AI platform subscriptions to friends, family, or colleagues. The platform supports multiple AI services including ChatGPT, Claude, Midjourney, and more.
 
 ## Features
 
@@ -32,8 +32,8 @@ GiftAI Hub is a platform that allows users to gift AI platform subscriptions to 
 1. Clone the repository
 
 ```bash
-git clone https://github.com/Ardig24/gift-ai-hub.git
-cd gift-ai-hub
+git clone https://github.com/Ardig24/intelligift.git
+cd intelligift
 ```
 
 2. Install dependencies
@@ -47,12 +47,24 @@ npm install
 Create a `.env.local` file with the following variables:
 
 ```
+# Supabase configuration
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-STRIPE_SECRET_KEY=your_stripe_secret_key
+SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
+
+# Stripe configuration
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=your_stripe_publishable_key
+STRIPE_SECRET_KEY=your_stripe_secret_key
 STRIPE_WEBHOOK_SECRET=your_stripe_webhook_secret
+
+# Email configuration
+BREVO_API_KEY=your_brevo_api_key
+
+# Base URL for production (used for Stripe redirect URLs)
+NEXT_PUBLIC_BASE_URL=https://intelligift.ai
 ```
+
+> **IMPORTANT**: Never commit your `.env.local` file to version control. It contains sensitive API keys and secrets that should be kept private.
 
 4. Run the development server
 

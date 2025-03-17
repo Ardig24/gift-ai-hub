@@ -1,0 +1,19 @@
+# Build output
+.next/
+out/
+build/
+dist/
+
+# Node modules
+node_modules/
+
+# Public assets
+public/
+
+# Config files
+next.config.js
+postcss.config.js
+tailwind.config.js
+
+# Generated files
+**/*.generated.*
