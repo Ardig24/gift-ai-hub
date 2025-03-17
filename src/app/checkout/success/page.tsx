@@ -1,13 +1,31 @@
 "use client"
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { CheckCircle } from 'lucide-react'
 
-export default function CheckoutSuccessPage() {
+// Loading component for Suspense fallback
+function CheckoutSuccessLoading() {
+  return (
+    <div className="container max-w-md mx-auto py-12">
+      <Card>
+        <CardHeader className="text-center">
+          <CardTitle>Processing Your Order</CardTitle>
+          <CardDescription>Please wait while we confirm your payment...</CardDescription>
+        </CardHeader>
+        <CardContent className="flex justify-center py-6">
+          <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
+        </CardContent>
+      </Card>
+    </div>
+  )
+}
+
+// Main component that uses useSearchParams
+function CheckoutSuccessContent() {
   const searchParams = useSearchParams()
   const sessionId = searchParams.get('session_id')
   const [orderDetails, setOrderDetails] = useState<any>(null)
@@ -84,5 +102,14 @@ export default function CheckoutSuccessPage() {
         </CardFooter>
       </Card>
     </div>
+  )
+}
+
+// Export the page component wrapped in Suspense
+export default function CheckoutSuccessPage() {
+  return (
+    <Suspense fallback={<CheckoutSuccessLoading />}>
+      <CheckoutSuccessContent />
+    </Suspense>
   )
 }
