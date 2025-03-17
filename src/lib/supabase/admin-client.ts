@@ -11,11 +11,15 @@ export const dynamic = 'force-dynamic';
  */
 export function createAdminClient() {
   // These environment variables need to be set in your .env.local file
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder-url.supabase.co';
+  const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || 'placeholder-service-key';
 
-  if (!supabaseUrl || !supabaseServiceKey) {
-    throw new Error('Supabase URL or Service Role Key is missing. Please check your environment variables.');
+  // Only throw an error in development, not during build
+  if (process.env.NODE_ENV === 'development' && 
+      (!supabaseUrl || !supabaseServiceKey || 
+       supabaseUrl === 'https://placeholder-url.supabase.co' || 
+       supabaseServiceKey === 'placeholder-service-key')) {
+    console.error('Supabase URL or Service Role Key is missing. Please check your environment variables.');
   }
 
   // Create a Supabase client with the service role key
