@@ -55,7 +55,7 @@ export async function sendGiftEmail(params: GiftEmailParams): Promise<boolean> {
     const emailPayload = {
       sender: {
         name: 'GiftAI Hub',
-        email: process.env.BREVO_FROM_EMAIL || 'gifts@giftaihub.com'
+        email: process.env.BREVO_FROM_EMAIL || 'gifts@intelligift.ai'
       },
       to: [
         {
@@ -329,7 +329,7 @@ function getGiftEmailTemplate(params: Omit<GiftEmailParams, 'recipientEmail'>): 
 <body>
   <div class="email-wrapper">
     <div class="email-header">
-      <img src="https://giftaihub.com/images/logo.png" alt="GiftAI Hub" class="logo">
+      <img src="https://intelligift.ai/images/logo.png" alt="IntelliGift" class="logo">
       <h1>You've Received an AI Gift!</h1>
     </div>
     
@@ -359,16 +359,16 @@ function getGiftEmailTemplate(params: Omit<GiftEmailParams, 'recipientEmail'>): 
     
     <a href="${redeemUrl}" class="redeem-button">Redeem Your Gift</a>
     
-    <p>If you have any questions about your gift, please contact our support team at support@giftaihub.com.</p>
+    <p>If you have any questions about your gift, please contact our support team at support@intelligift.ai.</p>
     
     <div class="email-footer">
-      <p>© ${new Date().getFullYear()} GiftAI Hub. All rights reserved.</p>
+      <p>© ${new Date().getFullYear()} IntelliGift. All rights reserved.</p>
       <div class="social-links">
-        <a href="https://twitter.com/giftaihub" class="social-link">Twitter</a>
-        <a href="https://instagram.com/giftaihub" class="social-link">Instagram</a>
-        <a href="https://linkedin.com/company/giftaihub" class="social-link">LinkedIn</a>
+        <a href="https://twitter.com/intelligift" class="social-link">Twitter</a>
+        <a href="https://instagram.com/intelligift" class="social-link">Instagram</a>
+        <a href="https://linkedin.com/company/intelligift" class="social-link">LinkedIn</a>
       </div>
-      <p>GiftAI Hub, Inc. • 123 AI Street, San Francisco, CA 94103</p>
+      <p>IntelliGift, Inc. • 123 AI Street, San Francisco, CA 94103</p>
     </div>
   </div>
 </body>

@@ -16,8 +16,8 @@ export default function Header() {
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center">
             <Link href="/" className="flex items-center space-x-1 hover-lift">
-              <span className="text-2xl font-bold heading-gradient">GiftAI</span>
-              <span className="text-2xl font-bold">Hub</span>
+              <span className="text-2xl font-bold heading-gradient">IntelliGift</span>
+              <span className="text-2xl font-bold"></span>
             </Link>
           </div>
           

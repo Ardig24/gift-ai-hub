@@ -29,7 +29,7 @@ export async function POST(request: Request) {
     const formattedGiftCode = formatGiftCode(giftCode);
     
     // Generate the redemption URL
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://giftaihub.com';
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://intelligift.ai';
     const redeemUrl = `${baseUrl}/redeem?code=${giftCode}`;
     
     // Send the email

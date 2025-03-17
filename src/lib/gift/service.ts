@@ -126,7 +126,7 @@ export async function sendGiftEmail(giftCode: GiftCodeData): Promise<boolean> {
     const formattedCode = formatGiftCode(giftCode.code);
     
     // Generate the redemption URL
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://giftaihub.com';
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://intelligift.ai';
     const redeemUrl = `${baseUrl}/redeem?code=${giftCode.code}`;
     
     // Send the email

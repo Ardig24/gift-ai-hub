@@ -100,8 +100,8 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <h3 className="font-medium">Email</h3>
-                  <a href="mailto:support@giftaihub.com" className="text-primary hover:underline">
-                    support@giftaihub.com
+                  <a href="mailto:support@intelligift.ai" className="text-primary hover:underline">
+                    support@intelligift.ai
                   </a>
                   <p className="text-sm text-muted-foreground mt-1">
                     For general inquiries and support

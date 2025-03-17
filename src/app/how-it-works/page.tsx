@@ -8,7 +8,7 @@ export default function HowItWorksPage() {
       {/* Hero Section */}
       <div className="mb-16 text-center">
         <h1 className="mb-4 text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
-          How <span className="heading-gradient">GiftAI Hub</span> Works
+          How <span className="heading-gradient">IntelliGift</span> Works
         </h1>
         <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">
           Gifting premium AI memberships has never been easier. Follow these simple steps to give the perfect tech gift.

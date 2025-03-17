@@ -109,7 +109,7 @@ export function getRedemptionEmailTemplate({
 <body>
   <div class="email-wrapper">
     <div class="email-header">
-      <img src="https://giftaihub.com/logo.png" alt="GiftAI Hub Logo" class="logo">
+      <img src="https://intelligift.ai/logo.png" alt="IntelliGift Logo" class="logo">
       <h1>Your Gift Has Been Redeemed!</h1>
     </div>
     
@@ -135,12 +135,12 @@ export function getRedemptionEmailTemplate({
         <li>Enjoy your premium access!</li>
       </ol>
       
-      <p>If you have any questions or need assistance, please contact our support team at support@giftaihub.com.</p>
+      <p>If you have any questions or need assistance, please contact our support team at support@intelligift.ai.</p>
     </div>
     
     <div class="email-footer">
-      <p>&copy; ${new Date().getFullYear()} GiftAI Hub. All rights reserved.</p>
-      <p>This email was sent to you because you redeemed a gift on GiftAI Hub.</p>
+      <p>&copy; ${new Date().getFullYear()} IntelliGift. All rights reserved.</p>
+      <p>This email was sent to you because you redeemed a gift on IntelliGift.</p>
     </div>
   </div>
 </body>
@@ -182,9 +182,9 @@ How to Access Your Subscription:
 4. Enter the activation code provided above
 5. Enjoy your premium access!
 
-If you have any questions or need assistance, please contact our support team at support@giftaihub.com.
+If you have any questions or need assistance, please contact our support team at support@intelligift.ai.
 
-© ${new Date().getFullYear()} GiftAI Hub. All rights reserved.
-This email was sent to you because you redeemed a gift on GiftAI Hub.
+© ${new Date().getFullYear()} IntelliGift. All rights reserved.
+This email was sent to you because you redeemed a gift on IntelliGift.
   `;
 }

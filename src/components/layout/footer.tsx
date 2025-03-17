@@ -11,8 +11,8 @@ export default function Footer() {
         <div className="grid grid-cols-1 gap-10 md:grid-cols-4">
           <div>
             <Link href="/" className="flex items-center space-x-1">
-              <span className="text-xl font-bold heading-gradient">GiftAI</span>
-              <span className="text-xl font-bold">Hub</span>
+              <span className="text-xl font-bold heading-gradient">IntelliGift</span>
+              <span className="text-xl font-bold"></span>
             </Link>
             <p className="mt-4 text-sm text-muted-foreground">
               Gift premium AI platform memberships to friends, family, and colleagues.
@@ -121,7 +121,7 @@ export default function Footer() {
         <div className="mt-12 border-t border-border/40 pt-8">
           <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
             <p className="text-sm text-muted-foreground">
-              &copy; {currentYear} GiftAI Hub. All rights reserved.
+              &copy; {currentYear} IntelliGift. All rights reserved.
             </p>
             <div className="flex items-center space-x-4">
               <Link href="/terms" className="text-xs text-muted-foreground transition-colors hover:text-primary">

@@ -48,8 +48,8 @@ export async function sendRedemptionEmail({
     // Prepare the email payload for Brevo API
     const emailPayload = {
       sender: {
-        name: 'GiftAI Hub',
-        email: process.env.BREVO_FROM_EMAIL || 'gifts@giftaihub.com'
+        name: 'IntelliGift',
+        email: process.env.BREVO_FROM_EMAIL || 'gifts@intelligift.ai'
       },
       to: [
         {

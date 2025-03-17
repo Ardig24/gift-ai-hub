@@ -18,7 +18,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "GiftAI Hub - Gift AI Platform Memberships",
+  title: "IntelliGift - Gift AI Platform Memberships",
   description: "Gift premium AI platform memberships to friends, family, and colleagues. Choose from popular AI services like ChatGPT, Claude, Midjourney, and more.",
 };
 
